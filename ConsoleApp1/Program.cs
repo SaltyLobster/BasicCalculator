@@ -4,68 +4,129 @@
     {
         public static void Main()
         {
-        Console.WriteLine("Kalkulator konsolowy, wpisz dwie liczby i operację, którą chcesz wykonać");
-        Console.WriteLine("Enter aby pokazać wynik, Esc aby zakończyć");
+            double result = 0;
+            string operacja = "";
+            double a = 0;
+            double b = 0;
+            bool firstIteration = true;
 
-
-        int result = 0;
-        string operacja = "";
-        int a = 0;
-        int b = 0;
-
-        while (true)
+            while (true)
             {
-            try 
+                try
                 {
-                    Console.WriteLine("Podaj pierwszą liczbę");
-                    a = int.Parse(Console.ReadLine());
-                    result += a;
-
-                    Console.WriteLine("Podaj operację");
-                    operacja = Console.ReadLine();
-
-                    Console.WriteLine("Podaj drugą liczbę");
-                    b = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Kalkulator konsolowy!");
+                    Console.WriteLine("Podaj pierwszą liczbę.");
+                    if (firstIteration)
+                    {
+                        try
+                        {
+                            a = double.Parse(Console.ReadLine());
+                            result += a;
+                            firstIteration = false;
+                        }
+                        catch (Exception)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Niepoprawna wartość!\n Wpisz nową liczbę.");
+                            Console.WriteLine();
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        a = result;
+                    }
+                    
+                    while (true)
+                    {
+                        Console.Clear();
+                        Console.WriteLine($"Podaj operację: +, -, *, /, %\n{a}");
+                        operacja = Console.ReadLine();
+                        if (operacja == "+" || operacja == "-" || operacja == "*" || operacja == "/" || operacja == "%")
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"Podaj drugą liczbę \n{a} {operacja}");
+                            while (true)
+                            {
+                                try
+                                {
+                                    b = double.Parse(Console.ReadLine());
+                                    break;
+                                }
+                                catch (Exception)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine($"Niepoprawna wartość\n Podaj drugą liczbę\n{a} {operacja}");
+                                }
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Niepoprawna operacja. Wciśnij Enter aby spróbować jeszcze raz");
+                            Console.ReadLine();
+                            continue;
+                        };
+                    }
+                    if (operacja == "+")
+                    {
+                        Console.Clear();
+                        result = Operacje.dodaj(a, b);
+                    }
+                    else if (operacja == "-")
+                    {
+                        Console.Clear();
+                        result = Operacje.odejmij(a, b);
+                    }
+                    else if (operacja == "*")
+                    {
+                        Console.Clear();
+                        result = Operacje.pomnoz(a, b);
+                    }
+                    else if (operacja == "/")
+                    {
+                        if (b == 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Nie można dzielić przez 0");
+                            continue;
+                        }
+                        Console.Clear();
+                        result = Operacje.podziel(a, b);
+                    }
+                    else if (operacja == "%")
+                    {
+                        Console.Clear();
+                        result = Operacje.procent(a, b);
+                    }
                 }
-            catch (Exception e)
+                catch (Exception)
                 {
-                    Console.WriteLine("Niepoprawna wartość");
+                    Console.Clear();
+                    Console.WriteLine("Niepoprawna wartość\n Wpisz nową liczbę");
+                    Console.WriteLine();
                     continue;
                 }
-                ConsoleKeyInfo key = Console.ReadKey(true);
+                Console.Clear();
+                Console.WriteLine($"Wynik: {result}");
+                Console.WriteLine("Naciśnij Enter, aby kontynuować, Esc aby zakończyć, Del aby zresetować");
 
-                if (key.Key == ConsoleKey.Escape)
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    continue;
+                }
+                else if (key.Key == ConsoleKey.Delete)
+                {
+                    result = 0;
+                    firstIteration = true;
+                    Console.Clear();
+                    continue;
+                }
+                else if (key.Key == ConsoleKey.Escape)
                 {
                     break;
-                }
-                else if (operacja == "+")
-                {
-                    Operacje.dodaj(a, b);
-                    Console.WriteLine(result);
-                }
-                 else if (operacja == "-")
-                {
-                    Operacje.odejmij(a, b);
-                    Console.WriteLine(result);
-                }
-                 else if (operacja == "*")
-                {
-                    Operacje.pomnoz(a, b);
-                    Console.WriteLine(result);
-                }
-                 else if (operacja == "/")
-                {
-                    Operacje.podziel(a, b);
-                    Console.WriteLine(result);
-                }
-                 else if (operacja == "%")
-                {
-                    Operacje.procent(a, b);
-                    Console.WriteLine(result);
-                }
-                else 
-                {
-                    Console.WriteLine(result);
                 }
             }
         }
