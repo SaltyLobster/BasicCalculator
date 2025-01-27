@@ -1,8 +1,8 @@
 using System;
 
-namespace Kalkulator
+namespace Calculator
 {
-    public class Operacje
+    public static class Operacje
     {
         public static Func<double, double, double> dodaj = (a, b) => a + b;
 

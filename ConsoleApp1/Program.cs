@@ -1,133 +1,122 @@
-﻿namespace Kalkulator
+﻿namespace Calculator
 {
     public class Program
     {
         public static void Main()
         {
             double result = 0;
-            string operacja = "";
             double a = 0;
+            string operation;
             double b = 0;
             bool firstIteration = true;
+            
+            Console.WriteLine("Kalkulator konsolowy!");
+            Console.WriteLine("Podaj pierwszą liczbę.");
 
             while (true)
             {
-                try
+                if (firstIteration)
                 {
-                    Console.WriteLine("Kalkulator konsolowy!");
-                    Console.WriteLine("Podaj pierwszą liczbę.");
-                    if (firstIteration)
+                    string input = Console.ReadLine();
+                    if (double.TryParse(input, out a))
                     {
-                        try
-                        {
-                            a = double.Parse(Console.ReadLine());
-                            result += a;
-                            firstIteration = false;
-                        }
-                        catch (Exception)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Niepoprawna wartość!\n Wpisz nową liczbę.");
-                            Console.WriteLine();
-                            continue;
-                        }
+                        result += a;
+                        firstIteration = false;
+                        Console.Clear();
                     }
                     else
                     {
-                        a = result;
-                    }
-                    
-                    while (true)
-                    {
                         Console.Clear();
-                        Console.WriteLine($"Podaj operację: +, -, *, /, %\n{a}");
-                        operacja = Console.ReadLine();
-                        if (operacja == "+" || operacja == "-" || operacja == "*" || operacja == "/" || operacja == "%")
-                        {
-                            Console.Clear();
-                            Console.WriteLine($"Podaj drugą liczbę \n{a} {operacja}");
-                            while (true)
-                            {
-                                try
-                                {
-                                    b = double.Parse(Console.ReadLine());
-                                    break;
-                                }
-                                catch (Exception)
-                                {
-                                    Console.Clear();
-                                    Console.WriteLine($"Niepoprawna wartość\n Podaj drugą liczbę\n{a} {operacja}");
-                                }
-                            }
-                            break;
-                        }
-                        else
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Niepoprawna operacja. Wciśnij Enter aby spróbować jeszcze raz");
-                            Console.ReadLine();
-                            continue;
-                        };
-                    }
-                    if (operacja == "+")
-                    {
-                        Console.Clear();
-                        result = Operacje.dodaj(a, b);
-                    }
-                    else if (operacja == "-")
-                    {
-                        Console.Clear();
-                        result = Operacje.odejmij(a, b);
-                    }
-                    else if (operacja == "*")
-                    {
-                        Console.Clear();
-                        result = Operacje.pomnoz(a, b);
-                    }
-                    else if (operacja == "/")
-                    {
-                        if (b == 0)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Nie można dzielić przez 0");
-                            continue;
-                        }
-                        Console.Clear();
-                        result = Operacje.podziel(a, b);
-                    }
-                    else if (operacja == "%")
-                    {
-                        Console.Clear();
-                        result = Operacje.procent(a, b);
+                        Console.WriteLine("Niepoprawna wartość!\n Wpisz liczbę.");
+                        continue;
                     }
                 }
-                catch (Exception)
+
+                Console.WriteLine($"Podaj operację: +, -, *, /, %\n{a}");
+
+                while (true)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Niepoprawna wartość\n Wpisz nową liczbę");
-                    Console.WriteLine();
-                    continue;
+                    operation = Console.ReadLine();
+                    if (operation == "+" || operation == "-" || operation == "*" || operation == "/" || operation == "%")
+                    {
+                        Console.Clear();
+                        Console.WriteLine($"Podaj drugą liczbę. \n{a} {operation}");
+                        while (true)
+                        {
+                            string input = Console.ReadLine();
+                            if (double.TryParse(input, out b))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                Console.WriteLine($"Niepoprawna wartość!\n Podaj drugą liczbę.\n{a} {operation}");
+                            }
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Niepoprawna operacja. Wpisz operację: +, -, *, /, %");
+                        continue;
+                    }
+                    ;
                 }
+
+                Calculate(ref a, ref b, ref result, operation);
+
+                a = result;
                 Console.Clear();
                 Console.WriteLine($"Wynik: {result}");
-                Console.WriteLine("Naciśnij Enter, aby kontynuować, Esc aby zakończyć, Del aby zresetować");
+                Console.WriteLine("Naciśnij Enter aby kontynuować, Esc aby zakończyć, R aby zresetować");
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.Enter)
                 {
                     continue;
                 }
-                else if (key.Key == ConsoleKey.Delete)
+                else if (key.Key == ConsoleKey.R)
                 {
                     result = 0;
                     firstIteration = true;
                     Console.Clear();
+                    Console.WriteLine("Kalkulator konsolowy!");
+                    Console.WriteLine("Podaj pierwszą liczbę.");
                     continue;
                 }
                 else if (key.Key == ConsoleKey.Escape)
                 {
                     break;
                 }
+            }
+        }
+        public static void Calculate(ref double a, ref double b, ref double result, string operation)
+        {
+            switch (operation)
+            {
+                case "+":
+                    result = Operacje.dodaj(a, b);
+                    break;
+                case "-":
+                    result = Operacje.odejmij(a, b);
+                    break;
+                case "*":
+                    result = Operacje.pomnoz(a, b);
+                    break;
+                case "/":
+                    if (b == 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Nie można dzielić przez 0");
+                        break;
+                    }
+                    result = Operacje.podziel(a, b);
+                    break;
+                case "%":
+                    result = Operacje.procent(a, b);
+                    break;
             }
         }
     }
