@@ -9,20 +9,34 @@ namespace Calculator
         {
             while (true)
             {
-                var (a, b, result, operation) = InputInterface.ValueInput();
-                Calculating.Calculate(a, b, ref result, operation);
-                a = result;
-
-                Console.Clear();
-                Console.WriteLine($"Wynik: {result}");
-                Console.WriteLine("Press any button to start again or Esc to Close");
-                ConsoleKeyInfo key = Console.ReadKey(true);
-                if (key.Key == ConsoleKey.Escape)
+                try
                 {
-                    break;
+                    var (a, b, result, operation) = InputInterface.ValueInput();
+                    Calculating.Calculate(a, b, ref result, operation);
+
+                    Console.Clear();
+                    Console.WriteLine($"Wynik: {result}");
+                    Console.WriteLine("Press any button to start again or Esc to Close");
+
+                    ConsoleKeyInfo key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.Escape)
+                    {
+                        break;
+                    }
+                }
+                catch (DivideByZeroException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Press any button to start again or Esc to Close");
+
+                    ConsoleKeyInfo key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.Escape)
+                    {
+                        break;
+                    }
+                    continue;
                 }
             }
-
         }
     }
 }

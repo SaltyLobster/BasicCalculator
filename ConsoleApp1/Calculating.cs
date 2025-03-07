@@ -10,34 +10,30 @@ namespace Calculator
     {
         public static void Calculate(double a, double b, ref double result, string operation)
         {
-            try
+            switch (operation)
             {
-                switch (operation)
-                {
-                    case "+":
-                        result = (a + b);
-                        break;
-                    case "-":
-                        result = (a = b);
-                        break;
-                    case "*":
-                        result = (a * b);
-                        break;
-                    case "/":
-                        if (b == 0)
-                        {
-                            throw new DivideByZeroException("Nie można dzielić przez 0");
-                        }
+                case "+":
+                    result = (a + b);
+                    break;
+                case "-":
+                    result = (a = b);
+                    break;
+                case "*":
+                    result = (a * b);
+                    break;
+                case "/":
+                    if (b == 0)
+                    {
+                        throw new DivideByZeroException("Nie można dzielić przez 0");
+                    }
+                    else
+                    {
                         result = (a / b);
                         break;
-                    case "%":
-                        result = (a * (b / 100));
-                        break;
-                }
-            }
-            catch (DivideByZeroException e)
-            {
-                Console.WriteLine(e.Message);
+                    }
+                case "%":
+                    result = (a * (b / 100));
+                    break;
             }
         }
     }
