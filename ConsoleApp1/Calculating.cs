@@ -4,23 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calculator
+namespace ConsoleApp1
 {
     public class Calculating
     {
-        public static void Calculate(double a, double b, ref double result, string operation)
+        public static double Calculate(double a, double b, string operation)
         {
+            double result;
             switch (operation)
             {
                 case "+":
-                    result = (a + b);
-                    break;
+                    return result = a + b;
                 case "-":
-                    result = (a = b);
-                    break;
+                    return result = a = b;
+
                 case "*":
-                    result = (a * b);
-                    break;
+                    return result = a * b;
                 case "/":
                     if (b == 0)
                     {
@@ -28,12 +27,12 @@ namespace Calculator
                     }
                     else
                     {
-                        result = (a / b);
-                        break;
+                        return result = a / b;
                     }
                 case "%":
-                    result = (a * (b / 100));
-                    break;
+                    return result = a * (b / 100);
+                default:
+                throw new InvalidOperationException("Nieznane działanie");
             }
         }
     }

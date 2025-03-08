@@ -1,41 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Calculator
+﻿
+namespace ConsoleApp1
 {
     public class InputInterface
     {
-        public static (double, double, double, string) ValueInput()
+        public static (double firstNum, double secondNum, string opertion) ValueInput(bool skipA, double firstNum)
         {
-            double a = 0;
-            double b = 0;
-            double result = 0;
-            string operation = "";
-            string input;
+            if (skipA)
+            {
+                string operation = OperationInput(firstNum);
+                double secondNum = NumberInput(firstNum, operation);
+                return (firstNum, secondNum, operation);
+            }
+            else
+            {
+                firstNum = NumberInput();
+                string operation = OperationInput(firstNum);
+                double secondNum = NumberInput(firstNum, operation);
+                return (firstNum, secondNum, operation);
 
-            Console.Clear();
-            Console.WriteLine("Enter the first number:");
+            }
+        }
+
+        private static double NumberInput()
+        {
+            double number;
+            Console.WriteLine("Enter the number:");
             while (true)
             {
-                input = Console.ReadLine();
-                if (double.TryParse(input, out a))
+                string input = Console.ReadLine();
+                if (double.TryParse(input, out number))
                 {
-                    result += a;
                     Console.Clear();
                     break;
                 }
                 else
                 {
                     Console.Clear();
-                    Console.WriteLine("Incorrect value! \nEnter a first number:");
+                    Console.WriteLine("Incorrect value! \nEnter the number:");
                     continue;
                 }
             }
+            return number;
+        }
 
-            Console.WriteLine($"{result}\nEnter one of the operations (+, -, *, /, %)");
+        private static double NumberInput(double firstNum, string operation)
+        {
+            double number;
+            Console.WriteLine($"{firstNum} {operation}\nEnter the number:");
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (double.TryParse(input, out number))
+                {
+                    Console.Clear();
+                    break;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine($"{firstNum} {operation}\nIncorrect value! \nEnter the number:");
+                    continue;
+                }
+            }
+            return number;
+        }
+
+        private static string OperationInput(double firstNum)
+        {
+            string operation;
+            Console.WriteLine($"{firstNum}\nEnter one of the operations (+, -, *, /, %)");
+
             while (true)
             {
                 operation = Console.ReadLine();
@@ -47,28 +81,11 @@ namespace Calculator
                 else
                 {
                     Console.Clear();
-                    Console.WriteLine($"{result}\nIncorrect value! \nEnter one of the operations (+, -, *, /, %)");
+                    Console.WriteLine($"{firstNum}\nIncorrect value! \nEnter one of the operations (+, -, *, /, %)");
                     continue;
                 }
             }
-            
-            Console.WriteLine($"{result} {operation}\nEnter the second number:");
-            while (true)
-            {
-                input = Console.ReadLine();
-                if (double.TryParse(input, out b))
-                {
-                    Console.Clear();
-                    break;
-                }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine($"{result} {operation}\nIncorrect value! \nEnter a second number:");
-                    continue;
-                }
-            }
-            return (a, b, result, operation);
+            return operation;
         }
     }
 }
